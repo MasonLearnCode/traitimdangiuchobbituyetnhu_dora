@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💕 Cho Em</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --deep: #0d0510;
+      --mid: #1a0a1e;
+      --rose: #e8335a;
+      --blush: #ff7096;
+      --pale: #ffd6e3;
+      --gold: #f5c97a;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Lato', sans-serif;
+    }
+
+    /* ── starfield ── */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--d) ease-in-out infinite;
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.6); }
+      50%       { opacity: var(--b); transform: scale(1); }
+    }
+
+    /* ── center stage ── */
+    .stage {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: clamp(18px, 4vw, 40px);
+      text-align: center;
+      padding: clamp(16px, 5vw, 28px) 20px;
+      width: 100%; max-width: 420px;
+    }
+
+    /* ── heart ── */
+    .heart-wrap {
+      position: relative;
+      width: clamp(160px, 50vw, 220px);
+      height: clamp(160px, 50vw, 220px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* glow rings */
+    .glow-ring {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,51,90,0.18) 0%, transparent 70%);
+      animation: pulse-ring var(--r) ease-out infinite;
+      opacity: 0;
+    }
+    .glow-ring:nth-child(1) { width: 340px; height: 340px; --r: 1.4s; animation-delay: 0s; }
+    .glow-ring:nth-child(2) { width: 280px; height: 280px; --r: 1.4s; animation-delay: 0.15s; }
+    @keyframes pulse-ring {
+      0%   { opacity: 0; transform: scale(0.85); }
+      30%  { opacity: 1; }
+      100% { opacity: 0; transform: scale(1.25); }
+    }
+
+    /* heart SVG */
+    .heart-svg {
+      width: clamp(120px, 38vw, 180px);
+      height: clamp(120px, 38vw, 180px);
+      animation: heartbeat 1.4s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(232,51,90,0.7));
+      transform-origin: center 60%;
+    }
+    @keyframes heartbeat {
+      0%   { transform: scale(1); }
+      14%  { transform: scale(1.18); }
+      28%  { transform: scale(1); }
+      42%  { transform: scale(1.12); }
+      56%  { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    /* floating particles */
+    .particle {
+      position: absolute;
+      font-size: var(--fs);
+      animation: float-up var(--dur) ease-in infinite;
+      animation-delay: var(--delay);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes float-up {
+      0%   { opacity: 0; transform: translateY(0) scale(0.5) rotate(var(--rot)); }
+      15%  { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-160px) scale(1) rotate(calc(var(--rot) + 30deg)); }
+    }
+
+    /* ── baby name ── */
+    .baby-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0 2px;
+      position: relative;
+    }
+    .baby-name .letter {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffe066 0%, #f5c97a 30%, #fff5cc 55%, #f5c97a 75%, #e8a020 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-letter 3s ease-in-out infinite, letter-in 0.6s both;
+      filter: drop-shadow(0 0 8px rgba(245,201,122,0.8));
+    }
+    .baby-name .space { display: inline-block; width: 0.35em; }
+
+    @keyframes shimmer-letter {
+      0%   { background-position: 0% 50%; filter: drop-shadow(0 0 6px rgba(245,201,122,0.6)); }
+      50%  { background-position: 100% 50%; filter: drop-shadow(0 0 18px rgba(255,240,100,1)) drop-shadow(0 0 30px rgba(245,180,50,0.7)); }
+      100% { background-position: 0% 50%; filter: drop-shadow(0 0 6px rgba(245,201,122,0.6)); }
+    }
+    @keyframes letter-in {
+      0%   { opacity: 0; transform: translateY(18px) scale(0.7); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* sparkle dots around the name */
+    .name-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .name-sparkle {
+      position: absolute;
+      font-size: 12px;
+      animation: sparkle-orbit var(--sd) ease-in-out infinite;
+      animation-delay: var(--sdelay);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes sparkle-orbit {
+      0%,100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0.5); }
+      50%      { opacity: 1; transform: translate(var(--sx), var(--sy)) scale(1.2); }
+    }
+
+    /* ── text ── */
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      color: var(--pale);
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      text-shadow: 0 0 40px rgba(255,112,150,0.5);
+      opacity: 0;
+      animation: fade-in 1.2s 0.4s forwards;
+    }
+    .subtitle {
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
+      color: var(--blush);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fade-in 1.2s 0.9s forwards;
+    }
+    .message {
+      max-width: min(340px, 88vw);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.92rem, 3.6vw, 1.15rem);
+      color: var(--pale);
+      line-height: 1.8;
+      opacity: 0;
+      animation: fade-in 1.2s 1.4s forwards;
+    }
+    .message em {
+      color: var(--gold);
+      font-style: italic;
+    }
+    .sign {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(0.88rem, 3.8vw, 1rem);
+      color: rgba(255,214,227,0.0);
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      max-width: 300px;
+      padding: 0 8px;
+      text-transform: none;
+      animation: sign-appear 1.2s 2.2s forwards;
+      background: linear-gradient(100deg, #ffd6e3 0%, #ffb3c8 40%, #ffffff 55%, #ffb3c8 70%, #ffd6e3 100%);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* shimmer runs after fade-in completes */
+      animation: sign-appear 1.2s 2.2s forwards, sign-shimmer 4s 3.4s ease-in-out infinite, sign-breathe 5s 3.4s ease-in-out infinite;
+    }
+    @keyframes sign-appear {
+      0%   { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes sign-shimmer {
+      0%   { background-position: 0% center; }
+      50%  { background-position: 100% center; }
+      100% { background-position: 0% center; }
+    }
+    @keyframes sign-breathe {
+      0%, 100% { transform: translateY(0);   filter: drop-shadow(0 0 0px rgba(255,180,210,0)); }
+      50%       { transform: translateY(-3px); filter: drop-shadow(0 0 10px rgba(255,160,200,0.55)); }
+    }
+
+    /* ── heart break overlay ── */
+    .break-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(8,2,12,0);
+      pointer-events: none;
+      transition: background 0.6s ease;
+    }
+    .break-overlay.active {
+      pointer-events: all;
+      background: rgba(8,2,12,0.92);
+    }
+    .break-msg {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 5vw, 1.5rem);
+      color: var(--pale);
+      text-align: center;
+      line-height: 1.75;
+      max-width: min(320px, 82vw);
+      padding: 0 20px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.8s 0.5s ease, transform 0.8s 0.5s ease;
+    }
+    .break-msg em {
+      color: var(--gold);
+      font-style: italic;
+    }
+    .break-overlay.active .break-msg {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .break-close {
+      position: absolute; bottom: 60px;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,214,227,0.35);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      opacity: 0;
+      transition: opacity 0.6s 1.2s;
+    }
+    .break-overlay.active .break-close { opacity: 1; }
+
+    /* shard pieces */
+    .shard {
+      position: absolute;
+      width: 0; height: 0;
+      pointer-events: none;
+      z-index: 101;
+      font-size: 28px;
+      animation: shard-fly var(--sd) var(--sdelay) cubic-bezier(.2,.8,.4,1) forwards;
+      opacity: 1;
+    }
+    @keyframes shard-fly {
+      0%   { opacity: 1; transform: translate(0,0) rotate(0deg) scale(1); }
+      80%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0.2); }
+    }
+
+    /* heart cracking animation */
+    .heart-svg.cracking {
+      animation: crack 0.5s ease forwards !important;
+    }
+    @keyframes crack {
+      0%   { transform: scale(1); filter: drop-shadow(0 0 18px rgba(232,51,90,0.7)); }
+      30%  { transform: scale(1.25); filter: drop-shadow(0 0 40px rgba(255,80,80,1)); }
+      60%  { transform: scale(0.85) rotate(-4deg); }
+      100% { transform: scale(0) rotate(8deg); opacity: 0; }
+    }
+
+    /* make heart cursor pointer */
+    .heart-wrap { cursor: pointer; }
+
+
+    /* ── divider ── */
+    .divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      opacity: 0;
+      animation: fade-in 1s 1.2s forwards;
+    }
+  </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="stage">
+
+  <div>
+    <div class="subtitle">dành riêng cho</div>
+  </div>
+
+  <div class="title">Em yêu của anh 🌙</div>
+
+  <div class="name-wrap">
+    <div class="baby-name" id="babyName"></div>
+  </div>
+
+  <div class="heart-wrap" id="heartWrap">
+    <div class="glow-ring"></div>
+    <div class="glow-ring"></div>
+    <svg class="heart-svg" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hg" cx="50%" cy="35%" r="60%">
+          <stop offset="0%"   stop-color="#ff96b2"/>
+          <stop offset="50%"  stop-color="#e8335a"/>
+          <stop offset="100%" stop-color="#8b0030"/>
+        </radialGradient>
+        <filter id="inner-glow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <path
+        d="M50 85 C50 85 5 55 5 28 C5 14 16 5 28 5 C36 5 44 9 50 16 C56 9 64 5 72 5 C84 5 95 14 95 28 C95 55 50 85 50 85Z"
+        fill="url(#hg)"
+        filter="url(#inner-glow)"
+      />
+      <!-- highlight -->
+      <ellipse cx="36" cy="24" rx="8" ry="5" fill="rgba(255,255,255,0.18)" transform="rotate(-30 36 24)"/>
+    </svg>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="message">
+    Mỗi nhịp đập là <em>một lần anh nghĩ đến em</em> —<br/>
+    và trái tim này chưa bao giờ ngừng nghỉ.
+  </p>
+
+  <div class="sign">trong tất cả những nơi anh có thể ở — anh chọn ở cạnh em</div>
+
+</div>
+
+<!-- heart break overlay -->
+<div class="break-overlay" id="breakOverlay">
+  <div class="break-msg">
+    Chúc em luôn có<br/><em>giấc ngủ ngon</em><br/>mỗi khi nghĩ về anh<br/>vào mỗi đêm 🌙
+  </div>
+  <div class="break-close">chạm để quay lại</div>
+</div>
+
+<script>
+  // ── stars ──
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.2 + 0.6;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${(Math.random()*4+2).toFixed(2)}s;
+      --b:${(Math.random()*0.7+0.15).toFixed(2)};
+      animation-delay:${(Math.random()*6).toFixed(2)}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // ── baby name letter-by-letter + sparkles ──
+  const nameEl = document.getElementById('babyName');
+  const text = 'Mah Baby Dora';
+  let delay = 0.7;
+  for (const ch of text) {
+    if (ch === ' ') {
+      const sp = document.createElement('span');
+      sp.className = 'space';
+      nameEl.appendChild(sp);
+    } else {
+      const span = document.createElement('span');
+      span.className = 'letter';
+      span.textContent = ch;
+      span.style.animationDelay = `${delay.toFixed(2)}s, ${delay.toFixed(2)}s`;
+      // stagger the shimmer per letter
+      const shimmerDelay = (delay + Math.random() * 1.5).toFixed(2);
+      span.style.setProperty('animation', `shimmer-letter 3s ${shimmerDelay}s ease-in-out infinite, letter-in 0.6s ${delay.toFixed(2)}s both`);
+      nameEl.appendChild(span);
+      delay += 0.07;
+    }
+  }
+
+  // sparkles orbiting the name
+  const nameWrap = nameEl.closest('.name-wrap');
+  const sparkleChars = ['✦','✧','⋆','✺','❋','✼'];
+  const positions = [
+    {x:'-80px', y:'-22px'}, {x:'80px', y:'-22px'},
+    {x:'-60px', y:'24px'}, {x:'60px', y:'24px'},
+    {x:'0px', y:'-30px'}, {x:'-110px', y:'2px'}, {x:'110px', y:'2px'},
+  ];
+  positions.forEach((pos, i) => {
+    const sp = document.createElement('span');
+    sp.className = 'name-sparkle';
+    sp.textContent = sparkleChars[i % sparkleChars.length];
+    sp.style.cssText = `
+      --sx: ${pos.x}; --sy: ${pos.y};
+      --sd: ${(2 + Math.random()*2).toFixed(2)}s;
+      --sdelay: ${(Math.random()*2).toFixed(2)}s;
+      color: #ffe066;
+    `;
+    nameWrap.appendChild(sp);
+  });
+  // ── heart break on click ──
+  const heartWrap = document.getElementById('heartWrap');
+  const heartSvg = heartWrap.querySelector('.heart-svg');
+  const overlay = document.getElementById('breakOverlay');
+  let broken = false;
+
+  heartWrap.addEventListener('click', () => {
+    if (broken) return;
+    broken = true;
+
+    // crack animation on heart
+    heartSvg.classList.add('cracking');
+
+    // spawn shards
+    const shardEmojis = ['💔','✨','🌸','💕','⭐','💖','✦','🌙'];
+    const rect = heartWrap.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('div');
+      el.className = 'shard';
+      const angle = (i / 18) * Math.PI * 2 + (Math.random() - 0.5) * 0.6;
+      const dist = 80 + Math.random() * 140;
+      el.textContent = shardEmojis[i % shardEmojis.length];
+      el.style.cssText = `
+        left: ${cx}px; top: ${cy}px;
+        --tx: ${Math.cos(angle) * dist}px;
+        --ty: ${Math.sin(angle) * dist}px;
+        --tr: ${(Math.random() * 720 - 360).toFixed(0)}deg;
+        --sd: ${(0.5 + Math.random() * 0.5).toFixed(2)}s;
+        --sdelay: ${(Math.random() * 0.15).toFixed(2)}s;
+      `;
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+
+    // show overlay after short delay
+    setTimeout(() => {
+      overlay.classList.add('active');
+    }, 350);
+  });
+
+  // tap overlay to go back
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    setTimeout(() => {
+      // restore heart
+      heartSvg.classList.remove('cracking');
+      heartSvg.style.animation = 'heartbeat 1.4s ease-in-out infinite';
+      heartSvg.style.opacity = '1';
+      heartSvg.style.transform = '';
+      broken = false;
+    }, 400);
+  });
+
+  const emojis = ['💕','✨','💖','🌸','⭐','💗','✦'];
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i / 14) * 360;
+    const r = 60 + Math.random() * 50;
+    const rad = angle * Math.PI / 180;
+    p.style.cssText = `
+      left: calc(50% + ${Math.cos(rad)*r}px);
+      top:  calc(50% + ${Math.sin(rad)*r}px);
+      --fs: ${(Math.random()*10+10)}px;
+      --dur: ${(Math.random()*1.5+2).toFixed(2)}s;
+      --delay: ${(Math.random()*2).toFixed(2)}s;
+      --rot: ${(Math.random()*40-20).toFixed(0)}deg;
+      transform: translate(-50%, -50%);
+    `;
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    wrap.appendChild(p);
+  }
+</script>
+</body>
+</html>
